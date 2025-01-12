@@ -1,0 +1,2 @@
+ChatOllama==0.2.12
+browser_use==0.1.19
