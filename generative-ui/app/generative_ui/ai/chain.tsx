@@ -3,7 +3,7 @@ import {
   MessagesPlaceholder,
 } from "@langchain/core/prompts";
 import { AgentExecutor, createToolCallingAgent } from "langchain/agents";
-import { ChatOpenAI } from "@langchain/openai";
+import { Ollama } from "@langchain/ollama";
 import { z } from "zod";
 import { Place } from "@/app/generative_ui/components/place";
 import { createRunnableUI } from "../utils/server";
@@ -72,8 +72,9 @@ const prompt = ChatPromptTemplate.fromMessages([
   new MessagesPlaceholder("agent_scratchpad"),
 ]);
 
-const llm = new ChatOpenAI({
-  model: "gpt-4o-mini",
+const llm = new Ollama({
+  baseUrl: "http://localhost:11434",
+  model: "llama3.1",
   temperature: 0,
   streaming: true,
 });

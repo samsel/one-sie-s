@@ -12,6 +12,8 @@ import {
   BytesOutputParser,
   StringOutputParser,
 } from "@langchain/core/output_parsers";
+import { Ollama } from "@langchain/ollama";
+import { OllamaEmbeddings } from "@langchain/community/embeddings/ollama";
 
 export const runtime = "edge";
 
@@ -74,9 +76,15 @@ export async function POST(req: NextRequest) {
     const previousMessages = messages.slice(0, -1);
     const currentMessageContent = messages[messages.length - 1].content;
 
-    const model = new ChatOpenAI({
-      model: "gpt-4o-mini",
+    const model = new Ollama({
+      baseUrl: "http://localhost:11434",
+      model: "llama3.1",
       temperature: 0.2,
+    });
+
+    const embeddings = new OllamaEmbeddings({
+      baseUrl: "http://localhost:11434",
+      model: "llama3.1",
     });
 
     const client = createClient(

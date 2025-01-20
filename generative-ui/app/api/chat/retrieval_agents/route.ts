@@ -14,6 +14,7 @@ import {
 import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
 import { createRetrieverTool } from "langchain/tools/retriever";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
+import { Ollama } from "@langchain/ollama";
 
 export const runtime = "edge";
 
@@ -67,8 +68,9 @@ export async function POST(req: NextRequest) {
       .map(convertVercelMessageToLangChainMessage);
     const returnIntermediateSteps = body.show_intermediate_steps;
 
-    const chatModel = new ChatOpenAI({
-      model: "gpt-4o-mini",
+    const chatModel = new Ollama({
+      baseUrl: "http://localhost:11434",
+      model: "llama3.1",
       temperature: 0.2,
     });
 

@@ -6,6 +6,7 @@ import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
 import { AgentExecutor, createToolCallingAgent } from "langchain/agents";
 import { pull } from "langchain/hub";
 import { createStreamableValue } from "ai/rsc";
+import { Ollama } from "@langchain/ollama";
 
 export async function runAgent(input: string) {
   "use server";
@@ -19,8 +20,9 @@ export async function runAgent(input: string) {
       "hwchase17/openai-tools-agent",
     );
 
-    const llm = new ChatOpenAI({
-      model: "gpt-4o-mini",
+    const llm = new Ollama({
+      baseUrl: "http://localhost:11434",
+      model: "llama3.1",
       temperature: 0,
     });
 

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { z } from "zod";
 
-import { ChatOpenAI } from "@langchain/openai";
+import { Ollama } from "@langchain/ollama";
 import { PromptTemplate } from "@langchain/core/prompts";
 
 export const runtime = "edge";
@@ -31,9 +31,10 @@ export async function POST(req: NextRequest) {
     /**
      * Function calling is currently only supported with ChatOpenAI models
      */
-    const model = new ChatOpenAI({
+    const model = new Ollama({
+      baseUrl: "http://localhost:11434",
+      model: "llama3.1",
       temperature: 0.8,
-      model: "gpt-4o-mini",
     });
 
     /**

@@ -7,6 +7,7 @@ import { z } from "zod";
 import { Runnable } from "@langchain/core/runnables";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { JsonOutputKeyToolsParser } from "@langchain/core/output_parsers/openai_tools";
+import { Ollama } from "@langchain/ollama";
 
 const Weather = z
   .object({
@@ -35,8 +36,9 @@ export async function executeTool(
       ["human", "{input}"],
     ]);
 
-    const llm = new ChatOpenAI({
-      model: "gpt-4o-mini",
+    const llm = new Ollama({
+      baseUrl: "http://localhost:11434",
+      model: "llama3.1",
       temperature: 0,
     });
 
