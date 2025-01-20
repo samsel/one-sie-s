@@ -1,1 +1,0 @@
-self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/Users/samuelselvanathan/Documents/onesies/generative-ui/app/layout\":[\"static/media/8bf7b2ceda89477b-s.p.woff2\"]},\"appUsingSizeAdjust\":true,\"pagesUsingSizeAdjust\":false}"
