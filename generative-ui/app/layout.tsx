@@ -1,43 +1,71 @@
-import "./globals.css";
-import { Public_Sans } from "next/font/google";
+import type { Metadata } from 'next';
+import { Toaster } from 'sonner';
 
-import { Navbar } from "@/components/Navbar";
+import { ThemeProvider } from '@/components/theme-provider';
 
-const publicSans = Public_Sans({ subsets: ["latin"] });
+import './globals.css';
 
-export default function RootLayout({
+export const metadata: Metadata = {
+  metadataBase: new URL('https://chat.vercel.ai'),
+  title: 'Next.js Chatbot Template',
+  description: 'Next.js chatbot template using the AI SDK.',
+};
+
+export const viewport = {
+  maximumScale: 1, // Disable auto-zoom on mobile Safari
+};
+
+const LIGHT_THEME_COLOR = 'hsl(0 0% 100%)';
+const DARK_THEME_COLOR = 'hsl(240deg 10% 3.92%)';
+const THEME_COLOR_SCRIPT = `\
+(function() {
+  var html = document.documentElement;
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) {
+    meta = document.createElement('meta');
+    meta.setAttribute('name', 'theme-color');
+    document.head.appendChild(meta);
+  }
+  function updateThemeColor() {
+    var isDark = html.classList.contains('dark');
+    meta.setAttribute('content', isDark ? '${DARK_THEME_COLOR}' : '${LIGHT_THEME_COLOR}');
+  }
+  var observer = new MutationObserver(updateThemeColor);
+  observer.observe(html, { attributes: true, attributeFilter: ['class'] });
+  updateThemeColor();
+})();`;
+
+export default async function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      // `next-themes` injects an extra classname to the body element to avoid
+      // visual flicker before hydration. Hence the `suppressHydrationWarning`
+      // prop is necessary to avoid the React hydration mismatch warning.
+      // https://github.com/pacocoursey/next-themes?tab=readme-ov-file#with-app
+      suppressHydrationWarning
+    >
       <head>
-        <title>LangChain + Next.js Template</title>
-        <link rel="shortcut icon" href="/images/favicon.ico" />
-        <meta
-          name="description"
-          content="Starter template showing how to use LangChain in Next.js projects. See source code and deploy your own at https://github.com/langchain-ai/langchain-nextjs-template!"
+        <script
+          dangerouslySetInnerHTML={{
+            __html: THEME_COLOR_SCRIPT,
+          }}
         />
-        <meta property="og:title" content="LangChain + Next.js Template" />
-        <meta
-          property="og:description"
-          content="Starter template showing how to use LangChain in Next.js projects. See source code and deploy your own at https://github.com/langchain-ai/langchain-nextjs-template!"
-        />
-        <meta property="og:image" content="/images/og-image.png" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="LangChain + Next.js Template" />
-        <meta
-          name="twitter:description"
-          content="Starter template showing how to use LangChain in Next.js projects. See source code and deploy your own at https://github.com/langchain-ai/langchain-nextjs-template!"
-        />
-        <meta name="twitter:image" content="/images/og-image.png" />
       </head>
-      <body className={publicSans.className}>
-        <div className="flex flex-col p-4 md:p-12 h-[100vh]">
-          <Navbar></Navbar>
+      <body className="antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Toaster position="top-center" />
           {children}
-        </div>
+        </ThemeProvider>
       </body>
     </html>
   );
