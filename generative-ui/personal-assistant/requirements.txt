@@ -1,0 +1,6 @@
+autogen>=0.4.2
+beautifulsoup4
+requests
+selenium
+webdriver_manager
+python-dotenv 
