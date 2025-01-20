@@ -1,4 +1,6 @@
-# personal assistant
+# personal assistant agent
+
+> This is a set of two AI agents built with autogen.
 
 ## what will this agent do?
 * Browsing YC's website
@@ -22,7 +24,7 @@
         }
     ]
 }
-``
+```
 
 ## How to run it?
 pip install -r requirements.txt
